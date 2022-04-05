@@ -1,7 +1,9 @@
 package com.projeto.gestaoescolar.services;
 
 import com.projeto.gestaoescolar.domain.Coordenador;
+import com.projeto.gestaoescolar.domain.Unidade;
 import com.projeto.gestaoescolar.repositories.CoordenadorRepository;
+import com.projeto.gestaoescolar.repositories.UnidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +18,16 @@ public class CoordenadorService {
     @Autowired
     private CoordenadorRepository coordenadorRepository;
 
+    @Autowired
+    private UnidadeRepository unidadeRepository;
+
     public Coordenador create(Coordenador coordenador) {
-        return coordenadorRepository.save(coordenador);
+        Unidade unidade = unidadeRepository.findUnidadeByCodigoUnidade(coordenador.getCodigoUnidade());
+        coordenador.setUnidade(unidade);
+        unidade.setCoordenador(coordenador);
+        coordenadorRepository.save(coordenador);
+        unidadeRepository.save(unidade);
+        return coordenador;
     }
 
     public Coordenador findById(Integer id) {

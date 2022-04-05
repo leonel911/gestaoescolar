@@ -7,29 +7,28 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name="COORDENADOR")
-public class Coordenador implements Serializable {
+@Table(name = "UNIDADE")
+public class Unidade implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
-    private String username;
-    private String senha;
-    private String email;
-    @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "coordenador")
-    private Unidade unidade;
+    private String endereço;
+    private String telefone;
     private Integer codigoUnidade;
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "coordenador_id")
+    private Coordenador coordenador;
 
-    public Coordenador() {
+    public Unidade() {
     }
 
-    public Coordenador(Integer id, String nome, String username, String senha, String email, Integer codigoUnidade) {
+    public Unidade(Integer id, String nome, String endereço, String telefone, Integer codigoUnidade) {
         this.id = id;
         this.nome = nome;
-        this.username = username;
-        this.senha = senha;
-        this.email = email;
+        this.endereço = endereço;
+        this.telefone = telefone;
         this.codigoUnidade = codigoUnidade;
     }
 
@@ -49,36 +48,28 @@ public class Coordenador implements Serializable {
         this.nome = nome;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEndereço() {
+        return endereço;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEndereço(String endereço) {
+        this.endereço = endereço;
     }
 
-    public String getSenha() {
-        return senha;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
-    public String getEmail() {
-        return email;
+    public Coordenador getCoordenador() {
+        return coordenador;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Unidade getUnidade() {
-        return unidade;
-    }
-
-    public void setUnidade(Unidade unidade) {
-        this.unidade = unidade;
+    public void setCoordenador(Coordenador coordenador) {
+        this.coordenador = coordenador;
     }
 
     public Integer getCodigoUnidade() {
@@ -93,8 +84,8 @@ public class Coordenador implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Coordenador that = (Coordenador) o;
-        return id.equals(that.id);
+        Unidade unidade = (Unidade) o;
+        return id.equals(unidade.id);
     }
 
     @Override

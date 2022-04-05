@@ -9,7 +9,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "coordenadores")
+@RequestMapping(value = "/coordenadores")
 public class CoordenadorResource {
 
     @Autowired
@@ -30,7 +30,7 @@ public class CoordenadorResource {
         return coordenadorService.findAll();
     }
 
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public Coordenador update(@PathVariable Integer id, @Valid @RequestBody Coordenador coordenador) {
         coordenador.setId(id);
         return coordenadorService.update(coordenador);

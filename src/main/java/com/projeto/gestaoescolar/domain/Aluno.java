@@ -1,6 +1,8 @@
 package com.projeto.gestaoescolar.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -25,6 +27,10 @@ public class Aluno implements Serializable {
     private Boolean desligado;
     private String periodoEstudantil;
     private Integer anoEscolar;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "unidade_id")
+    private Unidade unidade;
 
     public Aluno() {
     }

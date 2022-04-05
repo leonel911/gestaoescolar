@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -20,6 +21,9 @@ public class Unidade implements Serializable {
     @OneToOne
     @JoinColumn(name = "coordenador_id")
     private Coordenador coordenador;
+    @JsonIgnore
+    @OneToMany(mappedBy = "unidade")
+    private List<Aluno> alunos;
 
     public Unidade() {
     }

@@ -22,7 +22,7 @@ public class Endereco implements Serializable {
 
     @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "responsavel_id")
+    @JoinColumn(name = "unidade_id")
     private Unidade unidade;
 
     @JsonIgnore

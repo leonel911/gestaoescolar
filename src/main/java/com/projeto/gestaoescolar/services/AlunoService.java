@@ -1,10 +1,17 @@
 package com.projeto.gestaoescolar.services;
 
 import com.projeto.gestaoescolar.domain.Aluno;
+import com.projeto.gestaoescolar.domain.Escola;
+import com.projeto.gestaoescolar.domain.Responsavel;
+import com.projeto.gestaoescolar.domain.Unidade;
 import com.projeto.gestaoescolar.repositories.AlunoRepository;
+import com.projeto.gestaoescolar.repositories.EscolaRepository;
+import com.projeto.gestaoescolar.repositories.ResponsavelRepository;
+import com.projeto.gestaoescolar.repositories.UnidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -13,8 +20,33 @@ public class AlunoService {
     @Autowired
     private AlunoRepository alunoRepository;
 
+    @Autowired
+    private UnidadeRepository unidadeRepository;
+
+    @Autowired
+    private ResponsavelRepository responsavelRepository;
+
+    @Autowired
+    private EscolaRepository escolaRepository;
+
     public Aluno create(Aluno aluno) {
-        return alunoRepository.save(aluno);
+        aluno.setId(null);
+        Unidade unidade = unidadeRepository.findUnidadeByCodigoUnidade(aluno.getCodigoUnidade());
+        aluno.setUnidade(unidade);
+        unidade.setAlunos(Arrays.asList(aluno));
+
+        Responsavel responsavel = aluno.getResponsavel();
+        responsavel.setAlunos(Arrays.asList(aluno));
+        aluno.setResponsavel(responsavel);
+        responsavelRepository.save(responsavel);
+
+        Escola escola = aluno.getEscola();
+        escola.setAlunos((Arrays.asList(aluno)));
+        aluno.setEscola(escola);
+        escolaRepository.save(escola);
+        alunoRepository.save(aluno);
+        unidadeRepository.save(unidade);
+        return aluno;
     }
 
 

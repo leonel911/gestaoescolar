@@ -27,6 +27,7 @@ public class Aluno implements Serializable {
     private Boolean desligado;
     private String periodoEstudantil;
     private Integer anoEscolar;
+    private Integer codigoUnidade;
 
     @JsonIgnore
     @ManyToOne
@@ -44,7 +45,7 @@ public class Aluno implements Serializable {
     public Aluno() {
     }
 
-    public Aluno(Integer id, String nome, Integer idadeInicial, Integer idadeAtual, String sexo, Date dataNascimento, Date dataMatricula, String NIS, Boolean acompanhamento, String autorizadoBuscar, Boolean desligado, String periodoEstudantil, Integer anoEscolar) {
+    public Aluno(Integer id, String nome, Integer idadeInicial, Integer idadeAtual, String sexo, Date dataNascimento, Date dataMatricula, String NIS, Boolean acompanhamento, String autorizadoBuscar, Boolean desligado, String periodoEstudantil, Integer anoEscolar, Integer codigoUnidade) {
         this.id = id;
         this.nome = nome;
         this.idadeInicial = idadeInicial;
@@ -58,6 +59,8 @@ public class Aluno implements Serializable {
         this.desligado = desligado;
         this.periodoEstudantil = periodoEstudantil;
         this.anoEscolar = anoEscolar;
+        this.codigoUnidade = codigoUnidade;
+
     }
 
     public Integer getId() {
@@ -186,6 +189,14 @@ public class Aluno implements Serializable {
 
     public void setEscola(Escola escola) {
         this.escola = escola;
+    }
+
+    public Integer getCodigoUnidade() {
+        return codigoUnidade;
+    }
+
+    public void setCodigoUnidade(Integer codigoUnidade) {
+        this.codigoUnidade = codigoUnidade;
     }
 
     @Override

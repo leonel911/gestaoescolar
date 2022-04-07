@@ -34,8 +34,8 @@ public class UnidadeService {
     }   else {
             newUnidade.setNome(unidade.getNome());
         }
-        if(unidade.getEndereço() == null) {
-            newUnidade.setEndereço(unidade.getEndereço());
+        if(unidade.getEndereco() == null) {
+            newUnidade.setEndereco(unidade.getEndereco());
         }
         if(unidade.getTelefone() == null) {
             newUnidade.setTelefone((unidade.getTelefone()));

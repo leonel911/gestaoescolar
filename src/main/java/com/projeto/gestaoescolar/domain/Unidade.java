@@ -14,24 +14,30 @@ public class Unidade implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
-    private String endereço;
     private String telefone;
     private Integer codigoUnidade;
+
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "coordenador_id")
     private Coordenador coordenador;
+
     @JsonIgnore
     @OneToMany(mappedBy = "unidade")
     private List<Aluno> alunos;
 
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "endereco_id")
+    private Endereco endereco;
+
     public Unidade() {
     }
 
-    public Unidade(Integer id, String nome, String endereço, String telefone, Integer codigoUnidade) {
+    public Unidade(Integer id, String nome, Endereco endereco, String telefone, Integer codigoUnidade) {
         this.id = id;
         this.nome = nome;
-        this.endereço = endereço;
+        this.endereco = endereco;
         this.telefone = telefone;
         this.codigoUnidade = codigoUnidade;
     }
@@ -52,12 +58,12 @@ public class Unidade implements Serializable {
         this.nome = nome;
     }
 
-    public String getEndereço() {
-        return endereço;
+    public Endereco getEndereco() {
+        return endereco;
     }
 
-    public void setEndereço(String endereço) {
-        this.endereço = endereço;
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
     public String getTelefone() {
@@ -83,6 +89,16 @@ public class Unidade implements Serializable {
     public void setCodigoUnidade(Integer codigoUnidade) {
         this.codigoUnidade = codigoUnidade;
     }
+
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

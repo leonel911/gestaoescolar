@@ -1,5 +1,6 @@
 package com.projeto.gestaoescolar;
 
+import com.projeto.gestaoescolar.domain.Endereco;
 import com.projeto.gestaoescolar.domain.Unidade;
 import com.projeto.gestaoescolar.repositories.UnidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,15 @@ public class GestaoescolarApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		Unidade luizote = new Unidade(null, "Naica Luizote", " R. Genarino Cazabona, 954 - Luizote de Freitas, Uberlândia - MG, 38414-530", null, 1);
-		Unidade morumbi = new Unidade(null, "Naica Morumbi", " Av. Felipe Calixto Milken, 137 - Morumbi, Uberlândia - MG, 38407-225", null, 2);
+		Endereco endLuizote = new Endereco(null, "38414-530", "R. Genarino Cazabona", "Luizote de Freitas", "Uberlândia", "Minas Gerais", 954)
+		Endereco endMorumbi = new Endereco(null,  "38407-225", "Av. Felipe Calixto Milken", "Morumbi", "Uberlândia", "Minas Gerais", 137);
+
+
+
+
+
+		Unidade luizote = new Unidade(null, "Naica Luizote", endLuizote, null, 1);
+		Unidade morumbi = new Unidade(null, "Naica Morumbi", endMorumbi, null, 2);
 		Unidade lagoinha = new Unidade(null, "Naica Lagoinha", " R. Cel. Antônio Alves Pereira, 2660 - Lagoinha, Uberlândia - MG, 38408-370 ", null, 3);
 		Unidade tibery = new Unidade(null, "Naica Tibery", " Av. Europa, 175 - Tibery, Uberlândia - MG, 38405-088 ", null, 4);
 		Unidade martaHelena = new Unidade(null, "Naica Marta Helena", " Av. República do Piratini, 234 - Marta Helena, Uberlândia - MG, 38402-028", null, 5);

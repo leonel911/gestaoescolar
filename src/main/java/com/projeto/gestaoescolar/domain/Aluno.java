@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "alunos")
+@Table(name = "ALUNO")
 public class Aluno implements Serializable {
 
     @Id
@@ -27,10 +27,19 @@ public class Aluno implements Serializable {
     private Boolean desligado;
     private String periodoEstudantil;
     private Integer anoEscolar;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "unidade_id")
     private Unidade unidade;
+
+    @ManyToOne
+    @JoinColumn(name = "responsavel_id")
+    private Responsavel responsavel;
+
+    @ManyToOne
+    @JoinColumn(name = "escola_id")
+    private Escola escola;
 
     public Aluno() {
     }
@@ -155,7 +164,29 @@ public class Aluno implements Serializable {
         this.anoEscolar = anoEscolar;
     }
 
+    public Unidade getUnidade() {
+        return unidade;
+    }
 
+    public void setUnidade(Unidade unidade) {
+        this.unidade = unidade;
+    }
+
+    public Responsavel getResponsavel() {
+        return responsavel;
+    }
+
+    public void setResponsavel(Responsavel responsavel) {
+        this.responsavel = responsavel;
+    }
+
+    public Escola getEscola() {
+        return escola;
+    }
+
+    public void setEscola(Escola escola) {
+        this.escola = escola;
+    }
 
     @Override
     public boolean equals(Object o) {

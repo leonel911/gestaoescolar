@@ -2,6 +2,7 @@ package com.projeto.gestaoescolar;
 
 import com.projeto.gestaoescolar.domain.Endereco;
 import com.projeto.gestaoescolar.domain.Unidade;
+import com.projeto.gestaoescolar.repositories.EnderecoRepository;
 import com.projeto.gestaoescolar.repositories.UnidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,6 +13,9 @@ import java.util.Arrays;
 
 @SpringBootApplication
 public class GestaoescolarApplication implements CommandLineRunner {
+
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	@Autowired
 	private UnidadeRepository unidadeRepository;

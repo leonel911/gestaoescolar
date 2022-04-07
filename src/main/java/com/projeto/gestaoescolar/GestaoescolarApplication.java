@@ -20,8 +20,6 @@ public class GestaoescolarApplication implements CommandLineRunner {
 	@Autowired
 	private UnidadeRepository unidadeRepository;
 
-//	@Autowired
-//	private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(GestaoescolarApplication.class, args);
@@ -55,7 +53,7 @@ public class GestaoescolarApplication implements CommandLineRunner {
 		Unidade canaa = new Unidade(null, "Naica Canaã", endCanaa, null, 10);
 		Unidade tocantins = new Unidade(null, "Naica Tocantins", endTocantins, null, 11);
 
-//		enderecoRepository.saveAll(Arrays.asList(endLuizote, endMorumbi, endLagoinha, endTibery, endMartaHelena, endMansour, endPequis, endJardimCelia, endTapuirama, endCanaa, endTocantins));
+		enderecoRepository.saveAll(Arrays.asList(endLuizote, endMorumbi, endLagoinha, endTibery, endMartaHelena, endMansour, endPequis, endJardimCelia, endTapuirama, endCanaa, endTocantins));
 		unidadeRepository.saveAll(Arrays.asList(luizote, morumbi, lagoinha, tibery, martaHelena, mansour, pequis, jardimCelia, tapuirama, canaa, tocantins));
 
 

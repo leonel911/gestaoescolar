@@ -8,7 +8,10 @@ import com.projeto.gestaoescolar.repositories.AlunoRepository;
 import com.projeto.gestaoescolar.repositories.EscolaRepository;
 import com.projeto.gestaoescolar.repositories.ResponsavelRepository;
 import com.projeto.gestaoescolar.repositories.UnidadeRepository;
+import com.projeto.gestaoescolar.services.exceptions.DataIntegrityException;
+import com.projeto.gestaoescolar.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -47,15 +50,17 @@ public class AlunoService {
         aluno.setEscola(escola);
         escolaRepository.save(escola);
         alunoRepository.save(aluno);
-     //   unidadeService.update(unidade);
         return aluno;
     }
 
 
     public Aluno findAlunoById(Integer id) {
-        return alunoRepository.findAlunoById(id);
+        Aluno aluno = alunoRepository.findAlunoById(id);
+        if (aluno == null) {
+            throw new ObjectNotFoundException("Aluno não encontrado");
+        }
+            return aluno;
     }
-
     public List<Aluno> findAll() {
         return alunoRepository.findAll();
     }
@@ -140,6 +145,11 @@ public class AlunoService {
     }
 
     public void delete(Integer id) {
-        alunoRepository.deleteById(id);
+        findAlunoById(id);
+        try {
+            alunoRepository.deleteById(id);
+        } catch (DataIntegrityViolationException dataIntegrityViolationException) {
+            throw new DataIntegrityException("Não é possível excluir um aluno ativo");
+        }
     }
 }

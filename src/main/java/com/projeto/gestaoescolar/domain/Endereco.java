@@ -3,6 +3,7 @@ package com.projeto.gestaoescolar.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -13,6 +14,7 @@ public class Endereco implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotEmpty(message = "CEP é obrigatório")
     private String cep;
     private String logradouro;
     private String bairro;
@@ -26,9 +28,14 @@ public class Endereco implements Serializable {
     private Unidade unidade;
 
     @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "responsavel_id")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "endereco")
     private Responsavel responsavel;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "endereco")
+    private Escola escola;
+
+
 
     public Endereco() {
     }
@@ -113,6 +120,14 @@ public class Endereco implements Serializable {
 
     public void setResponsavel(Responsavel responsavel) {
         this.responsavel = responsavel;
+    }
+
+    public Escola getEscola() {
+        return escola;
+    }
+
+    public void setEscola(Escola escola) {
+        this.escola = escola;
     }
 
     @Override

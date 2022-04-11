@@ -49,4 +49,8 @@ public class UnidadeService {
     public void delete(Integer id) {
         unidadeRepository.deleteById(id);
     }
+
+    public Unidade findUnidadeByCodigoUnidade(Integer codigoUnidade) {
+        return unidadeRepository.findUnidadeByCodigoUnidade(codigoUnidade);
+    }
 }

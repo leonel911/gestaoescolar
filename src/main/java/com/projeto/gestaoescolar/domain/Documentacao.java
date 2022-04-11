@@ -3,6 +3,7 @@ package com.projeto.gestaoescolar.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -14,15 +15,18 @@ public class Documentacao implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotEmpty(message = "CPF é obrigatório")
     private String numeroCpf;
+    @NotEmpty(message = "RG é obrigatório")
     private String numeroRg;
+    @NotEmpty(message = "CTPS é obrigatório")
     private String ctps;
     private Date dataEmissaoRg;
+    @NotEmpty(message = "Orgão Expeditor é obrigatório")
     private String orgaoExpeditorRg;
 
     @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "responsavel_id")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "documentacao")
     private Responsavel responsavel;
 
     public Documentacao() {

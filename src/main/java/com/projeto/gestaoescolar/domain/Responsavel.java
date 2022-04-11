@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.relational.core.sql.In;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "RESPONSAVEL")
@@ -17,22 +16,28 @@ public class Responsavel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotEmpty(message = "Nome é obrigatório")
     private String nome;
     @ElementCollection
     @CollectionTable(name = "TELEFONE")
-    private Set<String> telefones;
+    private Set<String> telefones = new HashSet<>();
     private Date dataNascimento;
+    @NotEmpty(message = "NIS é obrigatório")
     private String nisResponsavel;
+    @NotEmpty(message = "Email é obrigatório")
+    @Email(message = "Email inválido")
     private String email;
     private String observacao;
     @JsonIgnore
     @OneToMany(mappedBy = "responsavel")
     private List<Aluno> alunos;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "responsavel")
+    @OneToOne
+    @JoinColumn(name = "documentacao_id")
     private Documentacao documentacao;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "responsavel")
+    @OneToOne
+    @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
     public Responsavel() {

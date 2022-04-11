@@ -9,7 +9,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(name = "/enderecos")
+@RequestMapping(value = "/enderecos")
 public class EnderecoResource {
 
     @Autowired

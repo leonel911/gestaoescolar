@@ -1,8 +1,11 @@
 package com.projeto.gestaoescolar.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,9 +15,15 @@ public class Coordenador implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotEmpty(message = "Nome é obrigatório")
     private String nome;
+    @NotEmpty(message = "Username é obrigatório")
     private String username;
+    @NotEmpty(message = "Senha é obrigatório")
+    @Length(min = 8, max = 10, message = "O tamanho deve ser entre 8 e 10 caracteres")
     private String senha;
+    @NotEmpty(message = "Email é obrigatório")
+    @Email(message = "Email inválido")
     private String email;
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "coordenador")

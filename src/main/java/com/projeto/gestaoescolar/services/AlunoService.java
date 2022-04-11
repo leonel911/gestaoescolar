@@ -21,7 +21,7 @@ public class AlunoService {
     private AlunoRepository alunoRepository;
 
     @Autowired
-    private UnidadeRepository unidadeRepository;
+    private UnidadeService unidadeService;
 
     @Autowired
     private ResponsavelRepository responsavelRepository;
@@ -31,13 +31,15 @@ public class AlunoService {
 
     public Aluno create(Aluno aluno) {
         aluno.setId(null);
-        Unidade unidade = unidadeRepository.findUnidadeByCodigoUnidade(aluno.getCodigoUnidade());
+        Unidade unidade = unidadeService.findUnidadeByCodigoUnidade(aluno.getCodigoUnidade());
         aluno.setUnidade(unidade);
         unidade.setAlunos(Arrays.asList(aluno));
 
         Responsavel responsavel = aluno.getResponsavel();
         responsavel.setAlunos(Arrays.asList(aluno));
         aluno.setResponsavel(responsavel);
+
+        aluno.getResponsavel().setTelefones(aluno.getResponsavel().getTelefones());
         responsavelRepository.save(responsavel);
 
         Escola escola = aluno.getEscola();
@@ -45,7 +47,7 @@ public class AlunoService {
         aluno.setEscola(escola);
         escolaRepository.save(escola);
         alunoRepository.save(aluno);
-        unidadeRepository.save(unidade);
+     //   unidadeService.update(unidade);
         return aluno;
     }
 
@@ -97,10 +99,10 @@ public class AlunoService {
             newAluno.setDataMatricula(aluno.getDataMatricula());
         }
 
-        if(aluno.getNIS() == null) {
-            aluno.setNIS(newAluno.getNIS());
+        if(aluno.getNis() == null) {
+            aluno.setNis(newAluno.getNis());
         } else {
-            newAluno.setNIS(aluno.getNIS());
+            newAluno.setNis(aluno.getNis());
         }
 
         if(aluno.getAcompanhamento() == null) {

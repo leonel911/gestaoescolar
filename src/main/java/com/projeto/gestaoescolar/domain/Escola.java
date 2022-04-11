@@ -3,6 +3,7 @@ package com.projeto.gestaoescolar.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -13,8 +14,13 @@ public class Escola implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotEmpty(message = "Nome é obrigatório")
     private String nome;
-    private String endereco;
+
+
+    @OneToOne
+    @JoinColumn(name = "endereco_id")
+    private Endereco endereco;
 
     @JsonIgnore
     @OneToMany(mappedBy = "escola")
@@ -23,10 +29,11 @@ public class Escola implements Serializable {
     public Escola() {
     }
 
-    public Escola(Integer id, String nome, String endereco) {
+    public Escola(Integer id, String nome, Endereco endereco, List<Aluno> alunos) {
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;
+        this.alunos = alunos;
     }
 
     public Integer getId() {
@@ -45,11 +52,11 @@ public class Escola implements Serializable {
         this.nome = nome;
     }
 
-    public String getEndereco() {
+    public Endereco getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(String endereco) {
+    public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
 

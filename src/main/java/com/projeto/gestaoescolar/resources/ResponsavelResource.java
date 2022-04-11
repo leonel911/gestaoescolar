@@ -9,7 +9,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(name = "/responsaveis")
+@RequestMapping(value = "/responsaveis")
 public class ResponsavelResource {
 
     @Autowired

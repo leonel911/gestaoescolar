@@ -2,8 +2,10 @@ package com.projeto.gestaoescolar.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -15,13 +17,16 @@ public class Aluno implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotEmpty(message = "O nome é obrigatório")
+    @Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 20 caracteres")
     private String nome;
     private Integer idadeInicial;
     private Integer idadeAtual;
     private String sexo;
     private Date dataNascimento;
     private Date dataMatricula;
-    private String NIS;
+    @NotEmpty(message = "O NIS é obrigatório")
+    private String nis;
     private Boolean acompanhamento;
     private String autorizadoBuscar;
     private Boolean desligado;
@@ -42,10 +47,12 @@ public class Aluno implements Serializable {
     @JoinColumn(name = "escola_id")
     private Escola escola;
 
+
+
     public Aluno() {
     }
 
-    public Aluno(Integer id, String nome, Integer idadeInicial, Integer idadeAtual, String sexo, Date dataNascimento, Date dataMatricula, String NIS, Boolean acompanhamento, String autorizadoBuscar, Boolean desligado, String periodoEstudantil, Integer anoEscolar, Integer codigoUnidade) {
+    public Aluno(Integer id, String nome, Integer idadeInicial, Integer idadeAtual, String sexo, Date dataNascimento, Date dataMatricula, String nis, Boolean acompanhamento, String autorizadoBuscar, Boolean desligado, String periodoEstudantil, Integer anoEscolar, Integer codigoUnidade) {
         this.id = id;
         this.nome = nome;
         this.idadeInicial = idadeInicial;
@@ -53,7 +60,7 @@ public class Aluno implements Serializable {
         this.sexo = sexo;
         this.dataNascimento = dataNascimento;
         this.dataMatricula = dataMatricula;
-        this.NIS = NIS;
+        this.nis = nis;
         this.acompanhamento = acompanhamento;
         this.autorizadoBuscar = autorizadoBuscar;
         this.desligado = desligado;
@@ -119,12 +126,12 @@ public class Aluno implements Serializable {
         this.dataMatricula = dataMatricula;
     }
 
-    public String getNIS() {
-        return NIS;
+    public String getNis() {
+        return nis;
     }
 
-    public void setNIS(String NIS) {
-        this.NIS = NIS;
+    public void setNis(String nis) {
+        this.nis = nis;
     }
 
     public Boolean getAcompanhamento() {

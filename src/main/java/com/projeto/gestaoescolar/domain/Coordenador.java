@@ -20,7 +20,7 @@ public class Coordenador implements Serializable {
     @NotEmpty(message = "Username é obrigatório")
     private String username;
     @NotEmpty(message = "Senha é obrigatório")
-    @Length(min = 8, max = 10, message = "O tamanho deve ser entre 8 e 10 caracteres")
+    @Length(min = 8, message = "Deve ter no mínimo 8 caracteres")
     private String senha;
     @NotEmpty(message = "Email é obrigatório")
     @Email(message = "Email inválido")

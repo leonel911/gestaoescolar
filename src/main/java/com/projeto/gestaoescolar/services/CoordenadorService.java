@@ -5,6 +5,8 @@ import com.projeto.gestaoescolar.domain.Unidade;
 import com.projeto.gestaoescolar.repositories.CoordenadorRepository;
 import com.projeto.gestaoescolar.repositories.UnidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +18,16 @@ import java.util.List;
 public class CoordenadorService {
 
     @Autowired
+    private PasswordEncoder pe;
+
+    @Autowired
     private CoordenadorRepository coordenadorRepository;
 
     @Autowired
     private UnidadeRepository unidadeRepository;
 
     public Coordenador create(Coordenador coordenador) {
+        coordenador.setSenha(pe.encode(coordenador.getSenha()));
         Unidade unidade = unidadeRepository.findUnidadeByCodigoUnidade(coordenador.getCodigoUnidade());
         coordenador.setUnidade(unidade);
         unidade.setCoordenador(coordenador);

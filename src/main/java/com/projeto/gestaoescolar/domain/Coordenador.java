@@ -29,9 +29,15 @@ public class Coordenador implements Serializable {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "coordenador")
     private Unidade unidade;
     private Integer codigoUnidade;
+    private Boolean accountActivated;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "coordenador")
     private ConfirmationToken confirmationToken;
+
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    private Usuario usuario;
+
 
     public Coordenador() {
     }
@@ -107,6 +113,22 @@ public class Coordenador implements Serializable {
 
     public void setConfirmationToken(ConfirmationToken confirmationToken) {
         this.confirmationToken = confirmationToken;
+    }
+
+    public Boolean getAccountActivated() {
+        return accountActivated;
+    }
+
+    public void setAccountActivated(Boolean accountActivated) {
+        this.accountActivated = accountActivated;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override

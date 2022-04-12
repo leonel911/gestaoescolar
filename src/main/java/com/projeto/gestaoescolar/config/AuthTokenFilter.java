@@ -1,7 +1,7 @@
 package com.projeto.gestaoescolar.config;
 
-import com.projeto.gestaoescolar.domain.Coordenador;
-import com.projeto.gestaoescolar.repositories.CoordenadorRepository;
+import com.projeto.gestaoescolar.domain.Usuario;
+import com.projeto.gestaoescolar.repositories.UsuarioRepository;
 import com.projeto.gestaoescolar.resources.exceptions.InvalidLoginException;
 import com.projeto.gestaoescolar.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,43 +24,43 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private TokenService tokenService;
 
     @Autowired
-    private CoordenadorRepository coordenadorRepository;
+    private UsuarioRepository usuarioRepository;
 
-    public AuthTokenFilter(TokenService tokenService, CoordenadorRepository coordenadorRepository) {
+    public AuthTokenFilter(TokenService tokenService, UsuarioRepository usuarioRepository) {
         this.tokenService = tokenService;
-        this.coordenadorRepository = coordenadorRepository;
-    }
-
-    private Integer authClient(String token) {
-        Integer userId = tokenService.getUserId(token);
-        Optional<Coordenador> optionalCoordenador = coordenadorRepository.findById(userId);
-        if (!optionalCoordenador.isPresent()) {
-            throw new InvalidLoginException("Usuário não encontrado");
-        }
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(optionalCoordenador.get().getUsername(),
-                        optionalCoordenador.get().getSenha()
-                );
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        return userId;
-    }
-
-    private String recuperaToken(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if (token == null || !token.startsWith("Bearer")) {
-            return null;
-        }
-        return token.substring(7, token.length());
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = recuperaToken(request);
-        boolean valid = tokenService.isValid(token);
-        if (valid) {
-            Integer userId = authClient(token);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        String token = recuperarToken(request);
+        boolean valido = tokenService.isValid(token);
+        if (valido){
+            Integer userId = authCliente(token);
             request.setAttribute("id", userId);
         }
         filterChain.doFilter(request, response);
+    }
+
+    private Integer authCliente(String token) {
+        Integer userId = tokenService.getUserId(token);
+        Optional<Usuario> optionalUsuario = usuarioRepository.findById(userId);
+        if(!optionalUsuario.isPresent()){
+            throw new InvalidLoginException("Usuário não encontrado!");
+        }
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(optionalUsuario.get().getUsername(),
+                        optionalUsuario.get().getSenha());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return userId;
+    }
+
+    private String recuperarToken(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (token == null || !token.startsWith("Bearer")){
+            return null;
+        }
+        return token.substring(7, token.length());
     }
 }

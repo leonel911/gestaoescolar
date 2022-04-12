@@ -1,6 +1,7 @@
 package com.projeto.gestaoescolar.services;
 
 import com.projeto.gestaoescolar.domain.Coordenador;
+import com.projeto.gestaoescolar.domain.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,16 +17,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class TokenService {
-    public static final String AUTHORITIES_CLAIM = "authorities";
-    public static final String SYSTEM_USER_CLAIM = "usuario";
 
-    @Value("${gestao.jwt.secret}")
-    private String secret;
+    public static final String AUTHORITIES_CLAIM = "authorities";
+
+    public static final String SYSTEM_USER_CLAIM = "usuario";
 
     @Value("${gestao.jwt.expiration}")
     private Integer expirationTime;
 
-    public String generateToken(UserDetails userDetails, Coordenador systemUser) {
+    @Value("${gestao.jwt.secret}")
+    private String secret;
+
+    public String generateToken(UserDetails userDetails, Usuario systemUser) {
         return Jwts.builder()
                 .setClaims(getClaims(userDetails, systemUser))
                 .setSubject(userDetails.getUsername())
@@ -34,11 +37,12 @@ public class TokenService {
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
-
-    private Map<String, Object> getClaims(UserDetails userDetails, Coordenador user) {
+    private Map<String, Object> getClaims(UserDetails userDetails, Usuario user) {
         Map<String, Object> claimsMap = new HashMap<>();
+
         claimsMap.put(AUTHORITIES_CLAIM, getAuthoritiesString(userDetails));
         claimsMap.put(SYSTEM_USER_CLAIM, user.getId());
+
         return claimsMap;
     }
 
@@ -52,7 +56,7 @@ public class TokenService {
         try {
             Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
             return true;
-        } catch (Exception exception) {
+        } catch (Exception e){
             return false;
         }
     }
@@ -64,5 +68,5 @@ public class TokenService {
                 .getBody();
         return (claims.get("usuario", Integer.class));
     }
-
 }
+

@@ -1,7 +1,10 @@
 package com.projeto.gestaoescolar.services;
 
+import com.projeto.gestaoescolar.domain.ConfirmationToken;
 import com.projeto.gestaoescolar.domain.Coordenador;
 import com.projeto.gestaoescolar.domain.Unidade;
+import com.projeto.gestaoescolar.domain.Usuario;
+import com.projeto.gestaoescolar.repositories.ConfirmationTokenRepository;
 import com.projeto.gestaoescolar.repositories.CoordenadorRepository;
 import com.projeto.gestaoescolar.repositories.UnidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +27,22 @@ public class CoordenadorService {
     private CoordenadorRepository coordenadorRepository;
 
     @Autowired
+    private ConfirmationTokenRepository confirmationTokenRepository;
+
+    @Autowired
     private UnidadeRepository unidadeRepository;
 
     public Coordenador create(Coordenador coordenador) {
+        coordenador.setAccountActivated(true);
         coordenador.setSenha(pe.encode(coordenador.getSenha()));
         Unidade unidade = unidadeRepository.findUnidadeByCodigoUnidade(coordenador.getCodigoUnidade());
         coordenador.setUnidade(unidade);
         unidade.setCoordenador(coordenador);
         coordenadorRepository.save(coordenador);
+        ConfirmationToken confirmationToken = new ConfirmationToken(coordenador);
+        confirmationToken.setCoordenador(coordenador);
+        coordenador.setConfirmationToken(confirmationToken);
+        confirmationTokenRepository.save(confirmationToken);
         unidadeRepository.save(unidade);
         return coordenador;
     }
@@ -74,4 +85,17 @@ public class CoordenadorService {
         coordenadorRepository.deleteById(id);
 
     }
+    public Coordenador toCoordenadorModel(Coordenador novoCoordenador) {
+        Coordenador coordenador = new Coordenador(novoCoordenador.getId(), novoCoordenador.getNome(), novoCoordenador.getUsername(),
+                novoCoordenador.getSenha(), novoCoordenador.getEmail(), novoCoordenador.getCodigoUnidade());
+        coordenador.setUsuario(toUsuario(novoCoordenador));
+        coordenador.setSenha(pe.encode(novoCoordenador.getSenha()));
+        return coordenador;
+
+
+    }
+    public Usuario toUsuario(Coordenador novoCoordenador){
+        return new Usuario(novoCoordenador.getId(), novoCoordenador.getUsername(), pe.encode(novoCoordenador.getSenha()));
+    }
+
 }

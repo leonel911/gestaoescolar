@@ -1,8 +1,12 @@
 package com.projeto.gestaoescolar.resources;
 
+import com.projeto.gestaoescolar.domain.AutenticacaoDto;
 import com.projeto.gestaoescolar.domain.Coordenador;
+import com.projeto.gestaoescolar.domain.DadosLogin;
+import com.projeto.gestaoescolar.services.AutenticacaoService;
 import com.projeto.gestaoescolar.services.CoordenadorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,10 +19,16 @@ public class CoordenadorResource {
     @Autowired
     private CoordenadorService coordenadorService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public Coordenador create(@Valid @RequestBody Coordenador coordenador) {
-        return coordenadorService.create(coordenador);
+    @Autowired
+    private AutenticacaoService autenticacaoService;
+
+    @RequestMapping(value = "/create",method=RequestMethod.POST)
+    public ResponseEntity<AutenticacaoDto> insert(@Valid @RequestBody Coordenador coordenador) {
+        coordenadorService.create(coordenadorService.toCoordenadorModel(coordenador));
+        AutenticacaoDto response = autenticacaoService.doLogin(new DadosLogin(coordenador.getUsername(), coordenador.getSenha()));
+        return ResponseEntity.ok(response);
     }
+
 
     @RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
     public Coordenador findById(@PathVariable Integer id) {

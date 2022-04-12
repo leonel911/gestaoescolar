@@ -1,5 +1,6 @@
 package com.projeto.gestaoescolar.resources;
 
+
 import com.projeto.gestaoescolar.domain.Documentacao;
 import com.projeto.gestaoescolar.services.DocumentacaoService;
 import org.springframework.beans.factory.annotation.Autowired;

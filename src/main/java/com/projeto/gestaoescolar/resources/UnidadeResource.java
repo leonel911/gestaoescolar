@@ -9,7 +9,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "unidades")
+@RequestMapping(value = "/unidades")
 public class UnidadeResource {
 
     @Autowired

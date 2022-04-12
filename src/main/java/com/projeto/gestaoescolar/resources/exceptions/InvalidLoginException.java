@@ -5,18 +5,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
 public class InvalidLoginException extends RuntimeException{
-    public InvalidLoginException() {
+
+    public InvalidLoginException(){
         super();
     }
-
-    public InvalidLoginException(String message) {
-        super(message);
+    public InvalidLoginException(String txt, Throwable cause){
+        super(txt, cause);
     }
-
-    public InvalidLoginException(String message, Throwable cause) {
-        super(message, cause);
+    public InvalidLoginException(String msg){
+        super(msg);
     }
-
-
-
+    public InvalidLoginException(Throwable cause){
+        super(cause);
+    }
 }
+

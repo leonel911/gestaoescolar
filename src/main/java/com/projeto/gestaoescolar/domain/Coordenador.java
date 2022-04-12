@@ -30,6 +30,9 @@ public class Coordenador implements Serializable {
     private Unidade unidade;
     private Integer codigoUnidade;
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "coordenador")
+    private ConfirmationToken confirmationToken;
+
     public Coordenador() {
     }
 
@@ -96,6 +99,14 @@ public class Coordenador implements Serializable {
 
     public void setCodigoUnidade(Integer codigoUnidade) {
         this.codigoUnidade = codigoUnidade;
+    }
+
+    public ConfirmationToken getConfirmationToken() {
+        return confirmationToken;
+    }
+
+    public void setConfirmationToken(ConfirmationToken confirmationToken) {
+        this.confirmationToken = confirmationToken;
     }
 
     @Override

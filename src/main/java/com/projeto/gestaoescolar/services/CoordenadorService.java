@@ -7,6 +7,7 @@ import com.projeto.gestaoescolar.domain.Usuario;
 import com.projeto.gestaoescolar.repositories.ConfirmationTokenRepository;
 import com.projeto.gestaoescolar.repositories.CoordenadorRepository;
 import com.projeto.gestaoescolar.repositories.UnidadeRepository;
+import com.projeto.gestaoescolar.services.exceptions.AuthorizationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,6 +49,9 @@ public class CoordenadorService {
     }
 
     public Coordenador findById(Integer id) {
+        if (getCoordenador() == null) {
+            throw new AuthorizationException("Acesso negado, verifique suas permissões");
+        }
         return coordenadorRepository.findCoordenadorById(id);
     }
 
@@ -86,8 +90,10 @@ public class CoordenadorService {
 
     }
     public Coordenador toCoordenadorModel(Coordenador novoCoordenador) {
-        Coordenador coordenador = new Coordenador(novoCoordenador.getId(), novoCoordenador.getNome(), novoCoordenador.getUsername(),
-                novoCoordenador.getSenha(), novoCoordenador.getEmail(), novoCoordenador.getCodigoUnidade());
+        Coordenador coordenador = new Coordenador(novoCoordenador.getId(), novoCoordenador.getNome(), novoCoordenador
+         .getUsername(),
+         novoCoordenador
+        .getSenha(), novoCoordenador.getEmail(), novoCoordenador.getCodigoUnidade(), novoCoordenador.getPerfil());
         coordenador.setUsuario(toUsuario(novoCoordenador));
         coordenador.setSenha(pe.encode(novoCoordenador.getSenha()));
         return coordenador;
@@ -95,7 +101,17 @@ public class CoordenadorService {
 
     }
     public Usuario toUsuario(Coordenador novoCoordenador){
-        return new Usuario(novoCoordenador.getId(), novoCoordenador.getUsername(), pe.encode(novoCoordenador.getSenha()));
+        return new Usuario(novoCoordenador.getId(), novoCoordenador.getUsername(), pe.encode(novoCoordenador.getSenha()), novoCoordenador.getPerfil());
+    }
+
+    public Coordenador getCoordenador() {
+        Object currentUser = UserService.authenticated();
+        currentUser = coordenadorRepository.findCoordenadorByUsername(currentUser.toString());
+        if (currentUser == null) {
+            throw new AuthorizationException("Acesso negado, faça login ou verifique suas permissões de acesso!");
+        } else {
+            return (Coordenador) currentUser;
+        }
     }
 
 }

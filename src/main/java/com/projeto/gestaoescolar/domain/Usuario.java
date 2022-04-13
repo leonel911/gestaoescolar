@@ -1,9 +1,8 @@
 package com.projeto.gestaoescolar.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.projeto.gestaoescolar.domain.enums.Perfil;
+
+import javax.persistence.*;
 
 @Entity
 public class Usuario {
@@ -14,13 +13,18 @@ public class Usuario {
     private String username;
     private String senha;
 
+    @Column(name = "PERFIS")
+    @Enumerated(EnumType.STRING)
+    private Perfil perfil;
+
     public Usuario() {
     }
 
-    public Usuario(Integer id, String username, String senha) {
+    public Usuario(Integer id, String username, String senha, Perfil perfil) {
         this.id = id;
         this.username = username;
         this.senha = senha;
+        this.perfil = perfil;
     }
 
     public Integer getId() {
@@ -45,5 +49,13 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
     }
 }

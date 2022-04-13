@@ -31,7 +31,7 @@ public class AuthResource {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<AutenticacaoDto> autenticar(@RequestBody DadosLogin dadosLogin) {
 
-        Coordenador coordenador = coordenadorRepository.findCoordenadorByUsername(dadosLogin.getUsername());
+ //       Coordenador coordenador = coordenadorRepository.findCoordenadorByUsername(dadosLogin.getUsername());
 
 //        if (coordenador.getAccountActivated()){
             return ResponseEntity.accepted().body(autenticacaoService.doLogin(dadosLogin));

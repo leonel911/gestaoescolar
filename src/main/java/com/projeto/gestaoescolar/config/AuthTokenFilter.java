@@ -6,6 +6,7 @@ import com.projeto.gestaoescolar.resources.exceptions.InvalidLoginException;
 import com.projeto.gestaoescolar.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -15,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Optional;
 
 @Component
@@ -51,7 +53,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(optionalUsuario.get().getUsername(),
-                        optionalUsuario.get().getSenha());
+                        optionalUsuario.get().getSenha(),
+                        Collections.singletonList(new SimpleGrantedAuthority(optionalUsuario.get().getPerfil()
+                        .getDescricao()))
+                        );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return userId;
     }

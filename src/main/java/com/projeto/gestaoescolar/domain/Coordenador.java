@@ -1,7 +1,9 @@
 package com.projeto.gestaoescolar.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.projeto.gestaoescolar.domain.enums.Perfil;
 import org.hibernate.validator.constraints.Length;
+import sun.misc.Perf;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -38,17 +40,23 @@ public class Coordenador implements Serializable {
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private Usuario usuario;
 
+    private Perfil perfil;
+
+
 
     public Coordenador() {
+        setPerfil(Perfil.COORDENADOR);
     }
 
-    public Coordenador(Integer id, String nome, String username, String senha, String email, Integer codigoUnidade) {
+    public Coordenador(Integer id, String nome, String username, String senha, String email, Integer codigoUnidade, Perfil perfil) {
         this.id = id;
         this.nome = nome;
         this.username = username;
         this.senha = senha;
         this.email = email;
         this.codigoUnidade = codigoUnidade;
+        this.perfil = perfil;
+        setPerfil(Perfil.COORDENADOR);
     }
 
     public Integer getId() {
@@ -129,6 +137,14 @@ public class Coordenador implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
     }
 
     @Override

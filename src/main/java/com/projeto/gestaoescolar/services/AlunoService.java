@@ -4,10 +4,8 @@ import com.projeto.gestaoescolar.domain.Aluno;
 import com.projeto.gestaoescolar.domain.Escola;
 import com.projeto.gestaoescolar.domain.Responsavel;
 import com.projeto.gestaoescolar.domain.Unidade;
-import com.projeto.gestaoescolar.repositories.AlunoRepository;
-import com.projeto.gestaoescolar.repositories.EscolaRepository;
-import com.projeto.gestaoescolar.repositories.ResponsavelRepository;
-import com.projeto.gestaoescolar.repositories.UnidadeRepository;
+import com.projeto.gestaoescolar.repositories.*;
+import com.projeto.gestaoescolar.services.exceptions.AuthorizationException;
 import com.projeto.gestaoescolar.services.exceptions.DataIntegrityException;
 import com.projeto.gestaoescolar.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +30,16 @@ public class AlunoService {
     @Autowired
     private EscolaRepository escolaRepository;
 
+    @Autowired
+    private CoordenadorService coordenadorService;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
+
     public Aluno create(Aluno aluno) {
+        if (coordenadorService.getCoordenador() == null) {
+            throw new AuthorizationException("Acesso negado, verifique suas permissões");
+        }
         aluno.setId(null);
         Unidade unidade = unidadeService.findUnidadeByCodigoUnidade(aluno.getCodigoUnidade());
         aluno.setUnidade(unidade);
@@ -48,7 +55,14 @@ public class AlunoService {
         Escola escola = aluno.getEscola();
         escola.setAlunos((Arrays.asList(aluno)));
         aluno.setEscola(escola);
+
+        escola.setEndereco(aluno.getEscola().getEndereco());
+        aluno.getEscola().setEndereco(aluno.getEscola().getEndereco());
+        enderecoRepository.save(aluno.getEscola().getEndereco());
         escolaRepository.save(escola);
+        if (coordenadorService.getCoordenador().getUnidade() != aluno.getUnidade()) {
+            throw new AuthorizationException("Acesso negado, verifique sua unidade");
+        }
         alunoRepository.save(aluno);
         return aluno;
     }
